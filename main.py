@@ -11,12 +11,12 @@ def home():
 
 @app.route('/preview', methods=["GET"])
 def preview():
-    top10rows = df.head(10)
+    top10rows = df.head(1)
     result = top10rows.to_json(orient="records")
     return result
 
 @app.route('/provider/<value>', methods=["GET"])
-def provider_type(value):
+def provider(value):
     print('value: ', value)
     filtered = df[df['PROVIDER_TYPE_CD'] == value]
     if len(filtered) <= 0:
@@ -24,10 +24,10 @@ def provider_type(value):
     else:
         return filtered.to_json(orient="records")
 
-@app.route('/provider/<value>/sex/<value2>', methods=["GET"])
-def icdcode2(value, value2):
-    filtered = df[df['principal_diagnosis_code'] == value]
-    filtered2 = filtered[filtered['sex'] == value2]
+@app.route('/provider/<value>/unique/<value2>', methods=["GET"])
+def provider2(value, value2):
+    filtered = df[df['PROVIDER_TYPE_CD'] == value]
+    filtered2 = filtered[filtered['UNIQUE_PROVIDERS'] == value2]
     if len(filtered) <= 0:
         return 'There is nothing here'
     else:
